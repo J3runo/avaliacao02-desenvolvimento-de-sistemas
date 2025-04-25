@@ -1,20 +1,38 @@
-import { useEffect } from 'react';
+"use client"
+import axios from 'axios';
+import { UUID, randomUUID } from 'crypto';
+import { useEffect, useState } from 'react';
+
+type Item = {
+  id: UUID
+  text: "",
+  checked: false
+}
 
 export default function MarketList() {
+  const [item, setItem] = useState<Item[]>([]);
   useEffect(() => {
     loadItens();
   }, [])
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-
-  function loadItens() {
-    // BUSCA AS INFORMAÇÕES NA API FAKE
-    // SALVA O VALOR NO ESTADO
+  async function loadItens() {
+    const response = await axios.get("http://localhost:3001/db.json");
+    
   }
 
-  function handleAddItem() {
+  async function handleAddItem() {
+   
     // CRIAR O OBJETO DO ITEM
+    const item = {
+      id:randomUUID,
+      nome:""
+    }
+    
     // CHAMA A API PARA ADICIONAR O ITEM
-    // CARREGA OS PRODUTOS NOVAMENTE // loadItens();
+    await axios.post("http://localhost:3000/posts", item);
+
+    loadItens();
   }
 
   function handleRemoveItem(id: string) {
@@ -30,6 +48,21 @@ export default function MarketList() {
   }
 
   return (
-    <h1>MarketList</h1>
+    <div className="container">
+      <div>
+        <h1>MarketList</h1>
+        <input type="text" placeholder='Adicione um novo item' />
+        <button onClick={handleAddItem}>Adicionar item</button>
+      </div>
+      <div className='content'>
+      {isLoading ? (
+                        <h1></h1>
+                    ) : (
+                        item.map(item => (
+                            <Item post={item} key={item.id} setItem={setItem} />
+                        ))
+                    )}
+      </div>
+    </div>
   );
 }
