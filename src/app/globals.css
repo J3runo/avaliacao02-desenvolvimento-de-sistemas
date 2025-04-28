@@ -11,6 +11,7 @@
     margin: 200px auto;
     padding: 20px;
     border-radius: 8px;
+    
 }
 .container h1{
     color: black;
@@ -24,4 +25,9 @@
 .container button{
     padding: 5px;
     border-radius: 3px;
+}
+.content{
+   
+    width: 200px;
+    
 }
